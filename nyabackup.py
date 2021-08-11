@@ -1,10 +1,11 @@
 #Nyarlko Network Backup Service
 #https://github.com/ny4rlk0/Nyarlko-Network-Backup/
-from posixpath import basename;from zipfile import ZipFile;import os;from datetime import date;from datetime import datetime;from shutil import copy2;import subprocess as sp;
+from posixpath import basename;from zipfile import ZipFile;import zipfile;import os;from datetime import date;from datetime import datetime;from shutil import copy2;import subprocess as sp;
 user="enter_your_username";password="enter_your_password"
 networkPath=f"\\\\192.168.1.1\\unity\\Projects" #Network Path
 dirName="C://Users//Guest//Desktop//SHARES" #Source folder to backup
 backupName="Backup" #Backup Name
+compression = zipfile.ZIP_DEFLATED
 def today():
     now = datetime.now()
     clock=now.strftime("%H.%M")
@@ -26,7 +27,7 @@ def compress_folder():
             for fileName in fileNames:
                 print(str(fileNumber)+f" {fileName}")
                 filePath=os.path.join(folderName,fileName)
-                zip.write(filePath,basename(filePath))
+                zip.write(filePath,basename(filePath),compress_type=compression)
                 fileNumber=fileNumber+1
     backupPath=os.getcwd()+"\\"+backupname
     upload_file(backupPath)
