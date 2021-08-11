@@ -2,7 +2,7 @@
 #https://github.com/ny4rlk0/Nyarlko-Network-Backup/
 from posixpath import basename;from zipfile import ZipFile;import os;from datetime import date;from datetime import datetime;from shutil import copy2;import subprocess as sp;
 user="enter_your_username";password="enter_your_password";networkPath=f"\\\\192.168.1.1\\unity\\Projects"
-dirName="C://Users//Guest//Desktop//SHARES";backupName="rpg"
+dirName="C://Users//Guest//Desktop//SHARES";backupName="Backup"
 def today():
     now = datetime.now()
     clock=now.strftime("%H.%M")
