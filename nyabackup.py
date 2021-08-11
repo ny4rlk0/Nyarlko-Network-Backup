@@ -19,12 +19,15 @@ def upload_file(backupPath):
     sp.Popen(accessNetworkDrive, stdout=sp.DEVNULL, stderr = sp.DEVNULL , stdin = sp.DEVNULL)
     copy2(backupPath,networkPath)
 def backup():
+    fileNumber=0
     backupname=backupName+" "+str(today())+".zip"
     with ZipFile (backupname,'w') as zip:
         for folderName,subFolders,fileNames in os.walk(dirName):
             for fileName in fileNames:
+                print(str(fileNumber)+f" {fileName}")
                 filePath=os.path.join(folderName,fileName)
                 zip.write(filePath,basename(filePath))
+                fileNumber=fileNumber+1
     backupPath=os.getcwd()+"\\"+backupname
     upload_file(backupPath)
 backup()
