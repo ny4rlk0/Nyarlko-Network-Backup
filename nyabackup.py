@@ -18,7 +18,7 @@ def upload_file(backupPath):
     accessNetworkDrive = 'NET USE ' + networkPath + ' /User:' + user + ' ' + password
     sp.Popen(accessNetworkDrive, stdout=sp.DEVNULL, stderr = sp.DEVNULL , stdin = sp.DEVNULL)
     copy2(backupPath,networkPath)
-def backup():
+def compress_folder():
     fileNumber=0
     backupname=backupName+" "+str(today())+".zip"
     with ZipFile (backupname,'w') as zip:
@@ -30,4 +30,4 @@ def backup():
                 fileNumber=fileNumber+1
     backupPath=os.getcwd()+"\\"+backupname
     upload_file(backupPath)
-backup()
+compress_folder()
