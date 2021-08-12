@@ -5,7 +5,7 @@ dirName="C://Users//Guest//Desktop//SHARES" #Source folder to backup
 backupName="[NABS] Backup";compression = zipfile.ZIP_DEFLATED
 w=Tk();w.title('Nyarlko Automated Backup System');w.configure(background='black');status='Idle.'
 def readConfig():
-    global user,password,networkPath,dirName,backupName,status
+    global user,password,networkPath,dirName,backupName,stat
     r=cfg.RawConfigParser()
     r.read('nbs.settings')
     user=str(r['config'] ['user'])
@@ -13,10 +13,10 @@ def readConfig():
     networkPath=str(r['config'] ['networkPath'])
     dirName=str(r['config']['dirName'])
     backupName=str(r['config']['backupName'])
-    status='Settings loaded.'
+    stat["text"] = "Settings loaded."
     return user,password,networkPath,dirName,backupName
 def createExampleConfig():
-    global status
+    global stat
     r=cfg.RawConfigParser()
     r.add_section('config')
     r.set('config','user',user)
@@ -27,9 +27,9 @@ def createExampleConfig():
     makeConfig=open('nbs.settings','w')
     r.write(makeConfig)
     makeConfig.close()
-    status='Example config created.'
+    stat["text"] = "Example config created."
 def writeConfig():
-    global status
+    global stat
     r=cfg.RawConfigParser()
     r.add_section('config')
     r.set('config','user',str(t.get()))
@@ -40,7 +40,7 @@ def writeConfig():
     makeConfig=open('nbs.settings','w')
     r.write(makeConfig)
     makeConfig.close()
-    status='Settings saved.'
+    stat["text"] = "Settings saved."
     readConfig()
 def today():
     now = datetime.now()
@@ -53,15 +53,15 @@ def today():
 def upload_file(backupPath):
     global stat,backupButton,saveConfigButton
     stat["text"] = "Deleting active network shares..."
-    time.sleep(2)
+    time.sleep(4)
     sp.Popen("NET USE * //delete", stdout=sp.DEVNULL, stderr = sp.DEVNULL , stdin = sp.DEVNULL)
     accessNetworkDrive = 'NET USE ' + networkPath + ' /User:' + user + ' ' + password
     stat["text"] = "Uploading backup.."
-    time.sleep(2)
+    time.sleep(4)
     sp.Popen(accessNetworkDrive, stdout=sp.DEVNULL, stderr = sp.DEVNULL , stdin = sp.DEVNULL)
     copy2(backupPath,networkPath)
     stat["text"] = "Upload finished..."
-    time.sleep(2)
+    time.sleep(4)
     backupButton["state"] = "active"
     saveConfigButton["state"] = "active"
 def compress_folder():
