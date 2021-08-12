@@ -2,7 +2,7 @@
 from posixpath import basename;import sys;from threading import Thread as core;import time;from tkinter import *;import configparser as cfg;from zipfile import ZipFile;import zipfile;import os;from datetime import date;from datetime import datetime;from shutil import copy2;import subprocess as sp;
 user="enter_your_username";password="enter_your_password";networkPath=f"\\\\192.168.1.1\\unity\\Projects" #Network Path
 dirName="C://Users//Guest//Desktop//SHARES" #Source folder to backup
-backupName="Backup";compression = zipfile.ZIP_DEFLATED
+backupName="[NABS] Backup";compression = zipfile.ZIP_DEFLATED
 w=Tk();w.title('Nyarlko Automated Backup System');w.configure(background='black');status='Idle.'
 def readConfig():
     global user,password,networkPath,dirName,backupName,status
