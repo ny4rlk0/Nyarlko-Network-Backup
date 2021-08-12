@@ -62,8 +62,8 @@ def upload_file(backupPath):
     copy2(backupPath,networkPath)
     stat["text"] = "Upload finished..."
     time.sleep(2)
-    backupButton["state"] = "enable"
-    saveConfigButton["state"] = "enable"
+    backupButton["state"] = "active"
+    saveConfigButton["state"] = "active"
 def compress_folder():
     fileNumber=0
     backupname=backupName+" "+str(today())+".zip"
@@ -123,7 +123,7 @@ backupButton.grid(row=7,column=0,sticky=W)
 saveConfigButton=Button(w,text="Save Config",width=12,font="none 12 bold",command=writeConfig)
 saveConfigButton.grid(row=7,column=1,sticky=W)
 #Durum
-stat=Label (w, text="Status: "+status+"." ,bg="black",fg="white",font="none 12 bold")
+stat=Label (w, text=status ,bg="black",fg="white",font="none 12 bold")
 stat.grid(row=8,column=0)
 #Run the main loop
 w.mainloop()
