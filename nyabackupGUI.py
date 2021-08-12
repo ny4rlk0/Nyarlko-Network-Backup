@@ -13,8 +13,8 @@ def readConfig():
     networkPath=str(r['config'] ['networkPath'])
     dirName=str(r['config']['dirName'])
     backupName=str(r['config']['backupName'])
-    usre.delete(0,END);pwe.delete(0,END);npe.delete(0,END);dne.delete(0,END);bne.delete(0,END)
-    usre.insert(0, user);pwe.insert(0, password);npe.insert(0, networkPath);dne.insert(0, dirName);bne.insert(0, backupName)
+    usre.delete(0,END);pwe.delete(0,END);npe.delete(0,END);dne.delete(0,END);bne.delete(0,END) #clear boxes
+    usre.insert(0, user);pwe.insert(0, password);npe.insert(0, networkPath);dne.insert(0, dirName);bne.insert(0, backupName) #fill boxes
 def createExampleConfig():
     global stat
     r=cfg.RawConfigParser()
