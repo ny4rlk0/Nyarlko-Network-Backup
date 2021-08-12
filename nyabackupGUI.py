@@ -86,10 +86,6 @@ def daemon_handler():
     compress_proccess = core(target=compress_folder)#, args=(1,)) Flask Server.
     compress_proccess.daemon=True #To kill when its needed neccesary
     compress_proccess.start() #Flask sunucusunu ayrı bir çekirdekte çalıştır.
-print(os.getcwd()+'\\nbs.settings')
-settings_exists=os.path.exists(os.getcwd()+'\\nbs.settings')
-if not settings_exists:createExampleConfig()
-else:readConfig()
 #UserBox
 Label (w, text="Username:" ,bg="black",fg="white",font="none 12 bold") .grid(row=0,column=0,sticky=W)
 t=Entry(w,width=40,bg="white")
@@ -126,5 +122,8 @@ saveConfigButton.grid(row=7,column=1,sticky=W)
 stat=Label (w, text=status ,bg="black",fg="white",font="none 12 bold")
 stat.grid(row=8,column=0)
 #Run the main loop
+settings_exists=os.path.exists(os.getcwd()+'\\nbs.settings')
+if not settings_exists:createExampleConfig()
+else:readConfig()
 w.mainloop()
 sys.exit(0)
