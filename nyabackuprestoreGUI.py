@@ -1,7 +1,5 @@
 #Nyarlko Network Backup / Restore Service GUI
 from posixpath import basename;import base64;import rsa;import sys;from tkinter.ttk import *;from threading import Thread as core;import time;from tkinter import *;import configparser as cfg;from zipfile import ZipFile;import zipfile;import os;from datetime import date;from datetime import datetime;from shutil import copy2;import subprocess as sp
-
-from rsa.pkcs1 import encrypt;
 user="enter_your_username";password="enter_your_password";networkPath=f"\\\\192.168.1.1\\unity\\Projects" #Network Path
 dirName="C://Users//Guest//Desktop//SHARES" #Source folder to backup
 backupName="[NABS] Backup";compression = zipfile.ZIP_DEFLATED ;backup_list=[]
