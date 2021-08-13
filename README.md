@@ -4,6 +4,7 @@
 ```sh
   Run the app as administrator.
   Enter neccesary info for connecting share and backup location.
+  Press save config.
  ```
  * Screen Shots:
 <p align="center">
