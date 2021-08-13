@@ -34,7 +34,6 @@ def createExampleConfig():
     f=open('nbs.settings','wb')
     values=[user,password,networkPath,dirName,backupName]
     for value in values:
-        print(value)
         f.write(encrypt(value)+b'data_ayirma_dizisi')
     f.close()
     stat["text"] = "Example config created."
