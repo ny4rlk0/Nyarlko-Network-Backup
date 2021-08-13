@@ -139,7 +139,7 @@ usr=Label (w, text="Username:" ,bg="black",fg="white",font="none 12 bold");usr.g
 usre=Entry(w,width=40,bg="white");usre.grid(row=0,column=1,sticky=W)
 #PasswordBox
 pw=Label (w, text="Password:" ,bg="black",fg="white",font="none 12 bold");pw.grid(row=1,column=0,sticky=W)
-pwe=Entry(w,width=40,bg="white");pwe.grid(row=1,column=1,sticky=W)
+pwe=Entry(w,width=40,bg="white",show='*');pwe.grid(row=1,column=1,sticky=W)
 #NetworkBox
 np=Label (w, text="Network Path:" ,bg="black",fg="white",font="none 12 bold");np.grid(row=2,column=0,sticky=W)
 npe=Entry(w,width=40,bg="white");npe.grid(row=2,column=1,sticky=W)
