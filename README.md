@@ -10,5 +10,5 @@ https://github.com/ny4rlk0/Simple-RSA-Key-Generator
  * Screen Shots:
 <p align="center">
   <a href=https://github.com/ny4rlk0/Nyarlko-Network-Backup-Restore/">
-    <img src="SS.PNG">
+    <img src="SS_NEW.PNG">
   </a>
