@@ -1,6 +1,7 @@
 # Nyarlko-Network-Backup-Restore
 https://github.com/ny4rlk0/Simple-RSA-Key-Generator
 * Backup / Restore certain folder as zip file to network location. EG: backup / restore whole unity project with single click.
+* Note: Save config refreshes backup list.
 * Usage:
 ```sh
   Run the app as administrator.
