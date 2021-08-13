@@ -1,45 +1,55 @@
 #Nyarlko Network Backup / Restore Service GUI
-from posixpath import basename;import sys;from tkinter.ttk import *;from threading import Thread as core;import time;from tkinter import *;import configparser as cfg;from zipfile import ZipFile;import zipfile;import os;from datetime import date;from datetime import datetime;from shutil import copy2;import subprocess as sp;
+from posixpath import basename;import base64;import rsa;import sys;from tkinter.ttk import *;from threading import Thread as core;import time;from tkinter import *;import configparser as cfg;from zipfile import ZipFile;import zipfile;import os;from datetime import date;from datetime import datetime;from shutil import copy2;import subprocess as sp
+
+from rsa.pkcs1 import encrypt;
 user="enter_your_username";password="enter_your_password";networkPath=f"\\\\192.168.1.1\\unity\\Projects" #Network Path
 dirName="C://Users//Guest//Desktop//SHARES" #Source folder to backup
 backupName="[NABS] Backup";compression = zipfile.ZIP_DEFLATED ;backup_list=[]
 w=Tk();w.title('Nyarlko Automated Backup System');w.configure(background='black');status='Idle.'
+#publicKey,privateKey=rsa.newkeys(1024) #Generate new one and change below for better security.
+#print("Pub: "+str(publicKey))#;print("Prv: "+str(privateKey))
+publicKey=rsa.PublicKey(93210106885308409673894147092817318540212544310203232607163836869322642798656241116149958978716165252579302990376441913575114718192641469813434041390632395005863940670390000350781400541721230908214485357175702643894061842885526098036566283186227390908535521521468214114398274677753683561918267377895059635759, 65537)
+privateKey=rsa.PrivateKey(93210106885308409673894147092817318540212544310203232607163836869322642798656241116149958978716165252579302990376441913575114718192641469813434041390632395005863940670390000350781400541721230908214485357175702643894061842885526098036566283186227390908535521521468214114398274677753683561918267377895059635759, 65537, 66272660490024199544905100509391772464688403912637747071059299427801504287486227128022943353086609888680253619216184198954172765363420885437181805231702470461960843476751027527233864135148094718943620449467333807396167122239999140524479715153256421379321279498016053989894614170482896468753909274464965830769, 44148962656467641997255269035201270095410858384556956919777906414579728115404314512598651806960418067521895211843094577970680919896506342422192638391888224179382537, 2111263805009323615927154438436683493141199441169831062117901381899226963175119191779051811591930732161790116716929465694361259510399201312134007)
+#For safety reasons public release .exe will not have the same Public/Private keys.
+def encrypt(data):
+    return_data=rsa.encrypt(bytes(data,'ISO-8859-1'),publicKey)
+    return return_data
+def decrypt(data):
+    return_data=rsa.decrypt(data,privateKey)
+    return return_data
 def readConfig():
     global user,password,networkPath,dirName,backupName,stat
-    r=cfg.RawConfigParser()
-    r.read('nbs.settings')
-    user=str(r['config'] ['user'])
-    password=str(r['config'] ['password'])
-    networkPath=str(r['config'] ['networkPath'])
-    dirName=str(r['config']['dirName'])
-    backupName=str(r['config']['backupName'])
+    f=open('nbs.settings','rb')
+    content=f.read()
+    a=content.split(b'data_ayirma_dizisi')
+    user=decrypt(a[0]).decode('ISO-8859-1')
+    password=decrypt(a[1]).decode('ISO-8859-1')
+    networkPath=decrypt(a[2]).decode('ISO-8859-1')
+    dirName=decrypt(a[3]).decode('ISO-8859-1')
+    backupName=decrypt(a[4]).decode('ISO-8859-1')
     usre.delete(0,END);pwe.delete(0,END);npe.delete(0,END);dne.delete(0,END);bne.delete(0,END)
     usre.insert(0, user);pwe.insert(0, password);npe.insert(0, networkPath);dne.insert(0, dirName);bne.insert(0, backupName)
     try:list_backups()
     except:pass
 def createExampleConfig():
     global stat
-    r=cfg.RawConfigParser()
-    r.add_section('config')
-    r.set('config','user',user)
-    r.set('config','password',password)
-    r.set('config','networkPath',networkPath)
-    r.set('config','dirName',dirName)
-    r.set('config','backupName',backupName)
-    makeConfig=open('nbs.settings','w')
-    r.write(makeConfig)
-    makeConfig.close()
+    f=open('nbs.settings','wb')
+    values=[user,password,networkPath,dirName,backupName]
+    for value in values:
+        print(value)
+        f.write(encrypt(value)+b'data_ayirma_dizisi')
+    f.close()
     stat["text"] = "Example config created."
 def writeConfig():
     global stat
-    r=cfg.RawConfigParser()
-    r.add_section('config')
-    r.set('config','user',str(usre.get()))
-    r.set('config','password',str(pwe.get()))
-    r.set('config','networkPath',str(npe.get()))
-    r.set('config','dirName',str(dne.get()))
-    r.set('config','backupName',str(bne.get()))
-    makeConfig=open('nbs.settings','w');r.write(makeConfig);makeConfig.close()
+    user=usre.get();password=pwe.get()
+    networkPath=npe.get();dirName=dne.get();backupName=bne.get()
+    values=[user,password,networkPath,dirName,backupName]
+    os.remove('nbs.settings')
+    f=open('nbs.settings','wb')
+    for value in values:
+        f.write(encrypt(value)+b'data_ayirma_dizisi')
+    f.close()
     stat["text"]="Settings saved.";time.sleep(4);readConfig()
 def today():
     now = datetime.now()
@@ -62,6 +72,10 @@ def upload_file(backupPath):
     stat["text"] = "Uploading backup..";time.sleep(4)
     copy2(backupPath,networkPath)
     stat["text"] = "Upload finished...";time.sleep(4)
+    stat["text"] = "Updating backup list...";time.sleep(4)
+    try:list_backups()
+    except:pass
+    stat["text"] = "Successfully updated backup list...";time.sleep(4)
     backupButton["state"]="active";saveConfigButton["state"]="active";restoreButton["state"]="active"
 def compress_folder():
     global stat
