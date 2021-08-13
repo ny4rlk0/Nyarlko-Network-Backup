@@ -15,6 +15,8 @@ def readConfig():
     backupName=str(r['config']['backupName'])
     usre.delete(0,END);pwe.delete(0,END);npe.delete(0,END);dne.delete(0,END);bne.delete(0,END)
     usre.insert(0, user);pwe.insert(0, password);npe.insert(0, networkPath);dne.insert(0, dirName);bne.insert(0, backupName)
+    try:list_backups()
+    except:pass
 def createExampleConfig():
     global stat
     r=cfg.RawConfigParser()
@@ -79,14 +81,15 @@ def list_backups():
     global backup_list,backupComboboxList
     backup_list=[]
     selected_backup_name=backupComboboxList.get()
+    access_network_drive()
     selected_backup=os.path.join(networkPath, selected_backup_name)
     backup_exists=os.path.exists(selected_backup)
     if not backup_exists:
         backupComboboxList.delete(0,END)
-    access_network_drive()
-    for file in os.listdir(networkPath): #Find backup files ending with .zip in networkDirectory
-        if file.endswith(".zip"):
-            backup_list.append(file)
+    if backup_exists:
+        for file in os.listdir(networkPath): #Find backup files ending with .zip in networkDirectory
+            if file.endswith(".zip"):
+                backup_list.append(file)
     for b in backup_list: #Update Combobox list
         backupComboboxList["values"] = backup_list
 def restore():
@@ -136,7 +139,7 @@ dne=Entry(w,width=40,bg="white");dne.grid(row=3,column=1,sticky=W)
 bn=Label (w, text="Backup Name:" ,bg="black",fg="white",font="none 12 bold");bn.grid(row=4,column=0,sticky=W)
 bne=Entry(w,width=40,bg="white");bne.grid(row=4,column=1,sticky=W)
 #BackupList
-#variable=StringVar(w)
+bkl=Label (w, text="Existing Backups:" ,bg="black",fg="white",font="none 12 bold");bkl.grid(row=7,column=0,sticky=W)
 backupComboboxList=Combobox(w,width=65,values=list_backups,state="readonly")
 backupComboboxList.grid(row=7,column=1)
 #BackupButton
@@ -152,7 +155,11 @@ restoreButton.grid(row=8,column=2,sticky=W)
 stat=Label (w, text=status ,bg="black",fg="white",font="none 12 bold");stat.grid(row=9,column=0)
 settings_exists=os.path.exists(os.getcwd()+'\\nbs.settings')
 if not settings_exists:createExampleConfig();readConfig()
-else:readConfig();list_backups()
+else:
+    readConfig();
+    try:
+        list_backups();
+    except:pass
 #Run the main loop
 w.mainloop()
 sys.exit(0)
